@@ -1,0 +1,137 @@
+<html lang="en-GB">
+<head>
+    <title>Image Resizer by Speedy Tools</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="">
+    <meta charset="utf-8">
+    <style>
+        * {
+            padding: 0;
+            margin:0;
+        }
+        body{
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+            font-size: 15px;
+            color: #333;
+            margin-bottom: 60px;
+        }
+        .bottom{
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 60px;
+            background-color: #212121;
+        }
+        header, footer, nav {
+            display: block;
+        }
+        header{
+            background-color: #276C80;
+            padding: 1px;
+            color: #fff;
+            font-size: 20px;
+            box-shadow: 0 -10px 25px -10px rgba(0,0,0,0.7) inset;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.26);
+        }
+        footer{
+            background-color: whitesmoke;
+            margin-top: 15px;
+            padding: 15px 5px;
+        }
+        canvas{
+            max-width: 100%;
+            max-height: 300px;
+        }
+        a{
+            color: #0076a4;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        #n {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            background-color: rgba(0,0,0,0.6);
+        }
+        #n ul{
+            background-color: white;
+            width: 65%;
+            min-width: 200px;
+            height: 100%;
+            box-shadow: 0px 0px 27px 0px rgba(0,0,0,0.5);
+            display: inline-block;
+        }
+        #n li {
+            padding: 9px;
+            border-bottom: 1px solid #ccc;
+        }
+        .h {
+            background-color: #76CBDD;
+        }
+        h1{
+            display: inline-block;
+            font-size: 1.8em;
+        }
+        h2{
+            font-size: 1.3em;
+        }
+        #n a{
+             color: #333;
+             text-decoration: none;
+        }
+        header svg {
+            float: right;
+            position: relative;
+        }
+        .b{
+            display: inline-block;
+            height: 100%;
+            float: right;
+            width: 35%;
+        }
+        .c{
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 5px;
+        }
+        .m {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .header {
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #274C80;
+        }
+        .header .no{
+            display: inline-block;
+            padding: 15px 20px;
+            background-color: #274C80;
+            color: white;
+            border-radius: 100%;
+            margin-right: 10px;
+        }
+        p {
+            margin-left: 60px;
+        }
+        .cta {
+            border: 0;
+            padding: 15px 25px;
+            background-color: #109010;
+            color: white;
+            font-weight: bold;
+        }
+        label{
+            min-width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <Header><div class="c"><h1>Tools</h1>
+        <svg height="32px" width="32px" onclick="m()"><path fill="white" d="M4,10h24c1.104,0,2-0.896,2-2s-0.8-2-2-2H4C2.8,6,2,6.8,2,8S2.8,10,4,10z M28,14H4c-1.104,0-2,0.8-2,2  s0.8,2,2,2h24c1.1,0,2-0.8,2-2S29.1,14,28,14z M28,22H4c-1.104,0-2,0.8-2,2s0.8,2,2,2h24c1.104,0,2-0.8,2-2  S29.1,22,28,22z"></path></svg>
+        </div>
+    </header>
+    <div class="c m">

@@ -1,0 +1,73 @@
+---
+layout: default
+title: Image Resizer
+---
+
+<h2 class="header"><div class="no">1</div>Upoad Image</h2>
+<p><input type="file" id="imageLoader" name="imageLoader"/></p>
+<div id="prev">
+	<p>Uploaded image preview: </p>
+	<p><canvas id="oc">Canvas not supported.</canvas></p>
+</div>
+<h2 class="header"><div class="no">2</div>Resize Image</h2>
+<p><label>Width: </label><input id="width"></p>
+<p><label>Height: </label><input id="height"></p>
+<p><canvas id="c"></canvas></p>
+<h2 class="header"><div class="no">3</div>Download Resized Image</h2>
+<p><a id="download" class="cta">Download Resized Image</a></p>
+
+<script>
+//var canvasSupported = !!document.createElement("canvas").getContext;
+//http://jsfiddle.net/influenztial/qy7h5/
+//http://jsfiddle.net/AbdiasSoftware/7PRNN/
+//http://jsfiddle.net/AbdiasSoftware/v8app/
+//Speedy.Tools
+//http://closure-compiler.appspot.com/
+var imageLoader =   document.getElementById('imageLoader');
+var width =         document.getElementById('width');
+var height =        document.getElementById('height');
+var output =        document.getElementById('c');
+var canvas =        document.getElementById('oc');
+
+var octx = output.getContext('2d');
+var ctx = canvas.getContext('2d');
+var img = new Image();
+
+imageLoader.addEventListener('change', handleImage, false);
+width.addEventListener('change', resize, false);
+height.addEventListener('change', resize, false);
+
+
+function handleImage(e){
+    var reader = new FileReader();
+    reader.onload = function(event){
+        img.onload = function(){
+            canvas.width = img.width;
+            canvas.height = img.height;
+            width.value = img.width;
+            height.value = img.height;
+            ctx.drawImage(img,0,0);
+        }
+        img.src = event.target.result;
+    }
+    reader.readAsDataURL(e.target.files[0]);
+    resize();
+}
+
+function resize() {
+    output.width = width.value;
+    output.height = height.value;
+    octx.drawImage(img, 0, 0, width.value, height.value);
+}
+
+function downloadCanvas(link, canvas, filename) {
+    link.href = canvas.toDataURL();
+    link.download = filename;
+}
+
+document.getElementById('download').addEventListener('click', function() {
+    downloadCanvas(this, output, 'test.png');
+    ga('send', 'event', 'Tools', 'Complete', 'Image Resized');
+}, false);
+
+</script>

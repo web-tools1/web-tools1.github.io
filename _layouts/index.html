@@ -1,0 +1,64 @@
+<html lang="en-GB">
+<head>
+    <title>{{ page.title }} : Speedy Tools</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="">
+    <meta charset="utf-8">
+	<link rel="stylesheet" href="/css/c.css" type="text/css" />
+</head>
+<body>
+    <Header><div class="c"><h1>Tools</h1>
+        <svg height="32px" width="32px" onclick="m()"><path fill="white" d="M4,10h24c1.104,0,2-0.896,2-2s-0.8-2-2-2H4C2.8,6,2,6.8,2,8S2.8,10,4,10z M28,14H4c-1.104,0-2,0.8-2,2  s0.8,2,2,2h24c1.1,0,2-0.8,2-2S29.1,14,28,14z M28,22H4c-1.104,0-2,0.8-2,2s0.8,2,2,2h24c1.104,0,2-0.8,2-2  S29.1,22,28,22z"></path></svg>
+        </div>
+    </header>
+    <div class="c m">
+        {{ content }}
+    </div>
+    <footer>
+        <div class="c">
+            <a onclick="s()">Suggest an Improvement</a>
+            
+            <iframe id="s" src="https://docs.google.com/forms/d/1Y04A1C31v1f15p7FoK6nk1_k94Dkzr2BSWaUvQl8xkY/viewform?embedded=true" width="100%" height="500" frameborder="0">Loading...</iframe>
+            
+        </div>
+    </footer>
+    <div class="bottom">Ad</div>
+    <nav id="n">
+        <ul>
+            <li class="h"><h2>Tools</h2></li>
+            <a href="/"><li>Image Resizer</li></a>
+            <a href="/"><li>Find and Replace</li></a>
+        </ul>
+        <div class="b" onclick="m()"></div>
+    </nav>
+    <script>
+        function m(event) {
+            var e = document.getElementById("n");
+            if (e.style.display === 'none') {
+                e.style.display = "block";
+            } else {
+                e.style.display = "none";
+            }
+        }
+        m();
+        function s() {
+            var j = document.getElementById('s');
+            if (j.style.display !== 'none') {
+                j.style.display = 'none';
+            } else {
+                j.style.display = 'block';
+            }
+        }
+        s();
+        
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-72326276-2', 'auto');
+        ga('send', 'pageview');
+    </script>
+</body>
+</html>
