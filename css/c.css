@@ -23,8 +23,8 @@ header{
 	padding: 1px;
 	color: #fff;
 	font-size: 20px;
-	box-shadow: 0 -10px 25px -10px rgba(0,0,0,0.7) inset;
 	box-shadow: 0 2px 5px rgba(0,0,0,0.26);
+	background-image: url(/img/bg.jpg);
 }
 footer{
 	background-color: whitesmoke;
@@ -59,6 +59,10 @@ a{
 	padding: 9px;
 	border-bottom: 1px solid #ccc;
 }
+#n a{
+	 color: #333;
+	 text-decoration: none;
+}
 .h {
 	background-color: #76CBDD;
 }
@@ -68,10 +72,6 @@ h1{
 }
 h2{
 	font-size: 1.3em;
-}
-#n a{
-	 color: #333;
-	 text-decoration: none;
 }
 header svg {
 	float: right;
@@ -106,16 +106,10 @@ header svg {
 	border-radius: 100%;
 	margin-right: 10px;
 }
-p {
-	margin-left: 60px;
-}
 .cta {
 	border: 0;
 	padding: 15px 25px;
 	background-color: #109010;
 	color: white;
 	font-weight: bold;
-}
-label{
-	min-width: 200px;
 }

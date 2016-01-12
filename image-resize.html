@@ -1,20 +1,25 @@
 ---
 layout: default
-title: Image Resizer
+title: Online Image Resizer
+description: Resize your images online with a three simple steps.
 ---
-
+<style>
+p {
+	margin-left: 60px;
+}
+</style>
 <h2 class="header"><div class="no">1</div>Upoad Image</h2>
 <p><input type="file" id="imageLoader" name="imageLoader"/></p>
 <div id="prev">
 	<p>Uploaded image preview: </p>
-	<p><canvas id="oc">Canvas not supported.</canvas></p>
+	<p><canvas id="oc">Browser not supported.</canvas></p>
 </div>
 <h2 class="header"><div class="no">2</div>Resize Image</h2>
 <p><label>Width: </label><input id="width"></p>
 <p><label>Height: </label><input id="height"></p>
 <p><canvas id="c"></canvas></p>
 <h2 class="header"><div class="no">3</div>Download Resized Image</h2>
-<p><a id="download" class="cta">Download Resized Image</a></p>
+<p><a id="download" class="cta">Download Image</a></p>
 
 <script>
 //var canvasSupported = !!document.createElement("canvas").getContext;
