@@ -199,6 +199,7 @@ function downloadCanvas(link, canvas, filename) {
 
 document.getElementById('download').addEventListener('click', function() {
     downloadCanvas(this, output, 'test.png');
+    ga('send', 'event', 'Tools', 'Complete', 'Image Resized');
 }, false);
 
         </script>
