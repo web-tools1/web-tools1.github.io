@@ -1,0 +1,40 @@
+---
+layout: default
+title: Find and Replace Text Online
+description: Find and replace text quickly online across multiple lines.
+---
+<style>
+textarea {
+	width: 100%;
+	max-width: 600px;
+}
+.-h {
+	width: 50%;
+	max-width: 300px;
+}
+</style>
+<h2 class="header">Find and Replace</h2>
+<p>
+	<textarea class="-h" id="f" rows="5" placeholder="Text to Find"></textarea>
+	<textarea class="-h" id="r" rows="5" placeholder="Replace with"></textarea>
+</p>
+<h2 class="header">Original Text</h2>
+<p><textarea id="i" rows="5" placeholder="Enter your Text here"></textarea></p>
+
+<p><input type="button" class="cta" id="btn" value="Find and Replace" onclick="r()"></p>
+<p id="s"></p>
+
+<script>
+
+function r() {
+	var input = document.getElementById("i");
+	var find = document.getElementById("f").value;
+	var replace = document.getElementById("r").value;
+	var replaced = 0;
+	while (input.value.indexOf(find) !== -1) {
+		input.value = input.value.replace(find,replace);
+		replaced++;
+	}
+	document.getElementById("s").innerText = replaced+" instance(s) found and replaced."
+}
+</script>
