@@ -18,9 +18,9 @@ textarea {
 	<textarea class="-h" id="f" rows="5" placeholder="Text to Find"></textarea>
 	<textarea class="-h" id="r" rows="5" placeholder="Replace with"></textarea>
 </p>
-<h2 class="header">Original Text</h2>
+<h2 class="header">Source Text</h2>
 <p><textarea id="i" rows="5" placeholder="Enter your Text here"></textarea></p>
-
+<p></p>
 <p><input type="button" class="cta" id="btn" value="Find and Replace" onclick="r()"></p>
 <p id="s"></p>
 
@@ -31,6 +31,7 @@ function r() {
 	var find = document.getElementById("f").value;
 	var replace = document.getElementById("r").value;
 	var replaced = 0;
+	if (find === "") return false;
 	while (input.value.indexOf(find) !== -1) {
 		input.value = input.value.replace(find,replace);
 		replaced++;
