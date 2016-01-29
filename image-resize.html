@@ -66,13 +66,37 @@ function resize() {
 }
 
 function downloadCanvas(link, canvas, filename) {
-    link.href = canvas.toDataURL();
-    link.download = filename;
+    if(window.navigator.msSaveBlob){
+    	console.log("Using msSaveBlob for download");
+    	var outputImg = canvas.toDataURL();
+    	var blob = dataURItoBlob(outputImg);
+
+    	navigator.msSaveBlob(blob, filename);
+    } else {
+    	console.log("Using Standard data URI for download");
+		link.href = canvas.toDataURL();
+		link.download = filename;
+    }
+}
+
+function dataURItoBlob(dataURI) {
+    var byteString = atob(dataURI.split(',')[1]);
+
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+
+    var ab = new ArrayBuffer(byteString.length);
+    var ia = new Uint8Array(ab);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+
+    var bb = new Blob([ab],{ type: "image/jpeg"});
+    return bb;
 }
 
 document.getElementById('download').addEventListener('click', function() {
     downloadCanvas(this, output, 'test.png');
-    ga('send', 'event', 'Tools', 'Complete', 'Image Resized');
+	ga('send', 'event', 'Tools', 'Complete', 'Image Resized');
 }, false);
 
 </script>
