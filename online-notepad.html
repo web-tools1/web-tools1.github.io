@@ -1,0 +1,33 @@
+---
+layout: default
+title: Online Notepad
+description: Online notepad with persistance.
+---
+<div id="notepad" contenteditable></div>
+<script>
+	var notepad = document.getElementById("notepad");
+	
+	if (typeof localStorage.notepad === 'string') notepad.innerHTML = localStorage.notepad;
+	
+	function saveNotepad() {
+		console.log("change");
+		localStorage.notepad = notepad.innerHTML;
+	}
+	
+	var html = notepad.innerHTML;
+	function checkForChanges() {
+		if (notepad.innerHTML !== html) {
+			saveNotepad();
+			html = notepad.innerHTML;
+		}
+		console.log("loop");
+		requestAnimationFrame(checkForChanges);
+	}
+	checkForChanges();
+</script>
+<style>
+#notepad {
+	min-height: 300px;
+	border: 1px solid #ccc;
+}
+</style>
