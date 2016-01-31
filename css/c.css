@@ -85,7 +85,7 @@ header svg {
 	width: 35%;
 }
 .c{
-	max-width: 800px;
+	max-width: 1024px;
 	margin: 0 auto;
 	padding: 5px;
 }
@@ -124,4 +124,24 @@ header a, header h1 {
 }
 footer .c {
     padding: 20px;
+}
+@media(min-width:1024px) {
+	.m:after {
+		content: " ";
+		display: table;
+		clear: both;
+	}
+	#n {
+		display: inline-block;
+		width: 20%;
+		position: inherit;
+	}
+	.k {
+		display: inline-block;
+		float: right;
+		width: 80%;
+	}
+	header svg {
+		display: none;
+	}
 }
