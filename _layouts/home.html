@@ -10,29 +10,8 @@
 <body>
     <Header><div class="c"><h1>Speedy Tools</h1></div></header>
     <div class="c m">
-		{% include side-menu.html %}
+		{{ content }}
     </div>
 	{% include footer.html %}
-	<style>
-	.m li.h {
-		display: block;
-		width: 100%;
-		height: auto;
-		margin-bottom: 20px;
-	}
-	.m li {
-		display: inline-block;
-		width: 100px;
-		height: 100px;
-		float: left;
-	}
-	.m a {
-		width: 150px;
-		height: 150px;
-		float: left;
-		background-color: #F3F3F3;
-		text-align: center;
-	}
-	</style>
 </body>
 </html>
