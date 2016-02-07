@@ -1,0 +1,380 @@
+/*
+Classes taken
+c - Close
+m - menu
+s - status
+
+*/
+
+
+body {
+    font-family: Roboto,sans-serif;
+    line-height: 1.4;
+    font-size: 14px;
+    color: #333;
+    padding: 0;
+    margin: 0;
+    background-color: #E6E8EA;
+}
+.col-container {
+    padding: 5px;
+}
+.col-left, .col-right { 
+    width: 50%;
+    display: inline-block;
+    height: 100%;
+    float: left;
+}
+.feed-head {
+    background-color: #f2f2f2;
+    padding: 5px 15px;
+    height: 20px;
+    font-weight: bold;
+    transition: all .1s;
+    cursor: pointer;
+    position: relative;
+    bottom: -1px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-bottom: 0px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    transition: .4s all;
+    box-shadow: 0px 0px 5px #CDCDD2;
+}
+.feed-head:after {
+    content: " ";
+    width: 100%;
+    background-color: #f2f2f2;
+    height: 10PX;
+    padding: 0 15px;
+    display: block;
+    position: relative;
+    left: -15px;
+}
+.col-container svg:hover {
+    background-color: #EFEFEF;
+    cursor: pointer;
+}
+.chat-line {
+    padding: 1px 1px 1px 5px;
+}
+.col-left .feed, .col-left .feed-head {
+    border-right: 1px solid #CCC;
+}
+.feed {
+    overflow-y: auto;
+    height: 90%;
+    height: calc(100% - 43px);
+    border: 1px solid #ccc;
+    border-bottom-left-radius: 9px;
+    z-index: -1;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    background-color: #f2f2f2;
+    box-shadow: 0px 0px 5px #CDCDD2;
+}
+.feed .name {
+    font-weight: bold;
+    cursor: pointer;
+}
+.feed .name:after {
+    content: ": ";
+    font-weight: bold;
+}
+.resize {
+    height: 100%;
+    width: 10px;
+    display: inline-block;
+    position: relative;
+    top: -100%;
+    float: right;
+    left: 5px;
+    cursor: col-resize;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAPCAMAAAD06J6PAAAABlBMVEXLy8v////hf8FnAAAADklEQVQI12NgYARCqhAABKEAH7qUkqsAAAAASUVORK5CYII=) 50% no-repeat;
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+.blue {
+    color: blue;
+}
+.red {
+    color: red;
+}
+.purple {
+    color: purple;
+}
+.orange {
+    color: orange;
+}
+.green {
+	color: green;
+}
+.red {
+	color: red;
+}
+.col-container svg {
+    float: right;
+    cursor: pointer;
+    border: 1px solid #CCCCCC;
+    border-right: 0;
+    padding: 3px;
+    border-bottom-left-radius: 5px;
+    position: relative;
+    border-top-left-radius: 5px;
+    right: -5px;
+    transition: .3s all;
+    height: 20px;
+    background-color: #fff;
+}
+.mbg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: none;
+    cursor: pointer;
+}
+.m {
+    width: 50%;
+    background-color: #fff;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    display: none;
+}
+.m h2 {
+    border-bottom: 1px solid #D2D2D2;
+    padding-bottom: 15px;
+    padding-top: 15px;
+    text-align: center;
+    margin-top: 0;
+}
+.m li span{
+    min-width: 50%;
+    display: inline-block;
+}
+.m li span[title]:after {
+    content: "i";
+    width: 14px;
+    height: 14px;
+    background-color: #BFBFBF;
+    background: linear-gradient(to bottom, #f0f9ff 0%,#cbebff 47%,#a1dbff 100%);
+    border-radius: 9px;
+    display: inline-block;
+    text-align: center;
+    font-size: 10px;
+    font-family: monospace;
+    color: #2F2F2F;
+    border: 1px solid #ABABAB;
+    position: relative;
+    top: -5px;
+}
+
+.c {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 20px;
+    cursor: pointer;
+	padding: 0 10px;
+}
+.s {
+    display: inline-block;
+    float: right;
+    margin-top: 5px;
+    display: none;
+}
+.s:before {
+    width: 10px;
+    height: 10px;
+    content: " ";
+    display: inline-block;
+    border-radius: 5px;
+    animation-name: pulse;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+@keyframes pulse {
+    0% {opacity: 1;}
+    50% {opacity: .1;}
+    100% {opacity: 1;}
+}
+.s[connection="connected"] {
+    color: green;
+}
+.s[connection="connected"]:before {
+    background-color: #0BB50B;
+}
+.s[connection="disconnected"] {
+    color: gray;
+}
+.s[connection="disconnected"]:before {
+    background-color: gray;
+}
+.s[connection="fail"] {
+    color: red;
+}
+.s[connection="fail"]:before {
+    background-color: red;
+}
+ul li{
+    list-style: none;
+	margin-bottom: 2px;
+}
+input, select {
+    padding: 1px;
+}
+h3 {
+	margin-bottom: 7px;
+}
+.channelSelect {
+position: fixed;
+    top: 50%;
+    left: 50%;
+    padding: 20px;
+    background-color: #fff;
+    transform: translate(-50%, -50%);
+}
+.channelSelect input {
+    font-size: 16px;
+    padding: 5px;
+}
+input[type="button"] {
+    background-color: #179017;
+    border: 0;
+    color: white;
+    padding: 7px 13px;
+}
+
+
+
+/*
+    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+                    TMI JS Styles
+
+    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    
+*/
+
+
+.chat-channel {
+	margin-right: .375em;
+	opacity: .6;
+	font-weight: 300;
+}
+.chat-name {
+	font-weight: 700;
+}
+.chat-colon {
+	margin-right: .375em;
+	opacity: .85;
+}
+.chat-line:not(.chat-action) .chat-colon:after {
+	content: ':';
+}
+.chat-message {
+	font-weight: 400;
+}
+.chat-line:not(.chat-action) .chat-message {
+	color: inherit !important;
+}
+
+.emoticon {
+	background-position: center center;
+	background-repeat: no-repeat;
+	margin: -5px 0;
+	display: inline-block;
+	vertical-align: middle !important;
+	height: 1.5em;
+}
+
+.chat-badges {
+	margin-right: .125em;
+}
+.chat-badges > div {
+	margin-bottom: 1px;
+	border-radius: 2px;
+	height: 1em;
+	min-width: 1em;
+	display: inline-block;
+	vertical-align: middle;
+	background-size: contain;
+	background-repeat: no-repeat;
+	margin-right: .3em;
+}
+
+.chat-badge-mod {
+	background-color: hsl(105, 89%, 36%);
+	background-image: url(http://www.twitch.tv/images/xarth/badge_mod.svg);
+}
+.chat-badge-turbo {
+	background-color: hsl(261, 43%, 45%);
+	background-image: url(http://www.twitch.tv/images/xarth/badge_turbo.svg);
+}
+.chat-badge-broadcaster {
+	background-color: hsl(0, 81%, 50%);
+	background-image: url(http://www.twitch.tv/images/xarth/badge_broadcaster.svg);
+}
+.chat-badge-admin {
+	background-color: hsl(40, 96%, 54%);
+	background-image: url(http://www.twitch.tv/images/xarth/badge_admin.svg);
+}
+.chat-badge-staff {
+	background-color: hsl(268, 55%, 13%);
+	background-image: url(http://www.twitch.tv/images/xarth/badge_staff.svg);
+}
+.chat-badge-subscriber {
+	background-image: url(https://static-cdn.jtvnw.net/emoticons/v1/1956/3.0);
+	
+}
+.chat-badge-bot {
+	background-image: url(https://cdn.betterttv.net/tags/bot.png);
+}
+
+
+[class*="chat-delete"] {
+}
+.chat-delete-timeout {
+}
+.chat-delete-clear {
+}
+
+[class*="chat-hosting"] {
+}
+.chat-hosting-yes {
+}
+.chat-hosting-no {
+}
+
+[class*="chat-connection"] {
+}
+[class*="chat-connection-good"] {
+}
+[class*="chat-connection-bad"] {
+}
+.chat-connection-good-connecting {
+}
+.chat-connection-good-logon {
+}
+.chat-connection-good-connected {
+}
+.chat-connection-good-reconnect {
+}
+.chat-connection-bad-fail {
+}
+.chat-connection-bad-disconnected {
+}
+
+[class*="chat-room"] {
+	/*font-size: .5em;*/
+}
+.chat-room-join {
+}
+.chat-room-part {
+}
+
+.chat-crash {
+}
