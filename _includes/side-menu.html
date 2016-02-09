@@ -1,8 +1,11 @@
 <ul>
+<!--
 	<li class="h"><h2>Tools</h2></li>
 	<li><a href="/image-resize">Image Resizer</a></li>
 	<li><a href="/find-and-replace">Find and Replace</a></li>
 	<li><a href="/online-notepad">Persistent Notepad</a></li>
-	<!--<li class="h"><h2>Guides</h2></li>
-	<a href="/guides/how-to-resize-image.html"><li>How to resize an image</li></a>-->
+-->
+{% assign pages_list = site.pages %}
+{% assign group = 'side-nav' %}
+{% include pages_list %}
 </ul>
