@@ -32,8 +32,8 @@ var octx = output.getContext('2d');
 var img = new Image();
 
 imageLoader.addEventListener('change', handleImage, false);
-width.addEventListener('change', resize, false);
-height.addEventListener('change', resize, false);
+width.addEventListener('input', resize, false);
+height.addEventListener('input', resize, false);
 
 
 function handleImage(e){
@@ -61,7 +61,7 @@ function resize() {
 }
 
 function downloadCanvas(link, canvas, filename) {
-    if(window.navigator.msSaveBlob){
+    if (window.navigator.msSaveBlob){
     	console.log("Using msSaveBlob for download");
     	var outputImg = canvas.toDataURL();
     	var blob = dataURItoBlob(outputImg);
