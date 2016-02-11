@@ -19,14 +19,6 @@ body{
 header, footer, nav {
 	display: block;
 }
-header{
-	background-color: #F5F5F5;
-	padding: 1px;
-	color: #fff;
-	font-size: 20px;
-	box-shadow: 0 2px 5px rgba(0,0,0,0.26);
-	background-image: url(/img/bg.jpg);
-}
 footer{
 	background-color: #F5F5F5;
 	margin-top: 15px;
@@ -73,7 +65,7 @@ ul {
 	width: 78%;
 }
 .h {
-	background-color: #EAEEEF;
+	background-color: #eee;
 	padding: 8px 15px 8px 33px;
 }
 h1{
@@ -102,20 +94,6 @@ h3 {
 	display: table;
 	clear: both;
 }
-.header {
-	margin-bottom: 10px;
-	font-weight: bold;
-	font-size: 1.1em;
-	color: #2A3573;
-}
-.header .no{
-	display: inline-block;
-	padding: 15px 20px;
-	background-color: #274C80;
-	color: white;
-	border-radius: 100%;
-	margin-right: 10px;
-}
 .cta {
 	border: 0;
 	padding: 15px 25px;
@@ -124,12 +102,32 @@ h3 {
 	font-weight: bold;
 }
 .j, .j a{
-	background-color: #212121;
+	background-color: #222;
 	color: #fff;
 	text-align: center;
 }
-header a, header h1 {
+header a, header {
 	color: #fff;
+}
+header .to {
+
+	background-color: #222;
+
+}
+
+header .bo {
+	background-color: #2867A5;
+
+	padding: 8px 0;
+
+}
+
+.bo div {
+
+    float: right;
+
+    margin: 6px 0;
+
 }
 footer .c {
     padding: 20px;
