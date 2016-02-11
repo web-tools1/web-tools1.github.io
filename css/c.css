@@ -110,24 +110,16 @@ header a, header {
 	color: #fff;
 }
 header .to {
-
 	background-color: #222;
-
 }
 
 header .bo {
 	background-color: #2867A5;
-
 	padding: 8px 0;
-
 }
 
-.bo div {
-
+.bo .c div {
     float: right;
-
-    margin: 6px 0;
-
 }
 footer .c {
     padding: 20px;
