@@ -106,6 +106,20 @@ h3 {
 	color: #fff;
 	text-align: center;
 }
+.header {
+	margin-bottom: 10px;
+	font-weight: bold;
+	font-size: 1.1em;
+	color: #2A3573;
+}
+.header .no{
+	display: inline-block;
+	padding: 15px 20px;
+	background-color: #274C80;
+	color: white;
+	border-radius: 100%;
+	margin-right: 10px;
+}
 header a, header {
 	color: #fff;
 }
