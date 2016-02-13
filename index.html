@@ -5,8 +5,8 @@ title: Speedy Tools
 description: Simple, fast online tools.
 ---
 <div class="m">
-	<ul>
-		<li class="h"><h2>Popular Tools</h2></li>
+	<ul id="container">
+		<li class="h"><h2>Popular Tools</h2><input id="search" placeholder="Search"></li>
 		<li><a href="/image-resize">
 			<svg version="1.1" width="60" height="60" viewBox="0 0 125 125">
 			<path fill="#565656" d="M137.25,124.983c0,6.974-5.692,12.627-12.714,12.627H-1.537c-7.021,0-12.713-5.653-12.713-12.627V-0.229
@@ -76,12 +76,15 @@ description: Simple, fast online tools.
 <style>
 .m li.h {
 	display: block;
-	width: 100%;
 	height: auto;
 	margin-bottom: 20px;
 }
-.m li {
+.m li, .m h2 {
 	display: inline-block;
+}
+input#search {
+    float: right;
+	margin: 20px 0;
 }
 .m a {
 	width: 150px;
@@ -99,3 +102,16 @@ span {
 	display: block;
 }
 </style>
+<script>
+	var search = document.getElementById("search");
+	var container = document.getElementById("container");
+	
+	search.oninput = function() {
+		var searchTerm = search.value.toLowerCase();
+		var elems = container.querySelectorAll("span");
+		for (var i = 0; i < elems.length; i++) {
+			var elem = elems[i];
+			if (elem.innerText.toLowerCase().indexOf(searchTerm) === -1) elem.parentElement.parentElement.style.display = "none"; else elem.parentElement.parentElement.style.display = "inline-block";
+		}
+	}
+</script>
