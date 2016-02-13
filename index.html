@@ -27,7 +27,7 @@ description: Simple, fast online tools.
 				</g>
 			</g>
 			</svg>
-		<span>Image Resizer</span>
+		<div>Image Resizer</div>
 		</a></li>
 		<li><a href="/find-and-replace">
 		<svg version="1.1" width="60" height="60" viewBox="0 0 125 125">
@@ -45,7 +45,7 @@ description: Simple, fast online tools.
 			</g>
 		</g>
 		</svg>
-		<span>Find and Replace</span>
+		<div>Find and Replace</div>
 		</a></li>
 		<li><a href="/online-notepad">
 		<svg version="1.1" width="60" height="60" viewBox="0 0 125 125">
@@ -69,7 +69,7 @@ description: Simple, fast online tools.
 				</g>
 			</g>
 			</svg>
-		<span>Persistent Notepad</span>
+		<div>Persistent Notepad</div>
 		</a></li>
 	</ul>
 </div>
@@ -84,7 +84,6 @@ description: Simple, fast online tools.
 }
 input#search {
     float: right;
-	margin: 20px 0;
 }
 .m a {
 	width: 150px;
@@ -98,9 +97,6 @@ svg {
 	margin-bottom: 12px;
 	margin-top: 30px;
 }
-span {
-	display: block;
-}
 </style>
 <script>
 	var search = document.getElementById("search");
@@ -108,7 +104,7 @@ span {
 	
 	search.oninput = function() {
 		var searchTerm = search.value.toLowerCase();
-		var elems = container.querySelectorAll("span");
+		var elems = container.querySelectorAll("div");
 		for (var i = 0; i < elems.length; i++) {
 			var elem = elems[i];
 			if (elem.innerText.toLowerCase().indexOf(searchTerm) === -1) elem.parentElement.parentElement.style.display = "none"; else elem.parentElement.parentElement.style.display = "inline-block";
