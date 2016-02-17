@@ -112,7 +112,7 @@ h3 {
 	font-size: 1.1em;
 	color: #2A3573;
 }
-.header .no{
+.header .no {
 	display: inline-block;
 	padding: 15px 20px;
 	background-color: #274C80;
@@ -130,13 +130,18 @@ header .to {
 header .bo {
 	background-color: #2867A5;
 	padding: 8px 0;
+
 }
 
 .bo .c div {
-    float: right;
+	float: right;
+
 }
 footer .c {
-    padding: 20px;
+	padding: 20px;
+}
+.pw-button {
+	margin-left: 8px;
 }
 @media(max-width:1024px) {
 	.k {
