@@ -10,7 +10,7 @@ description: Resize your images online with a three simple steps.
 <h2 class="header"><div class="no">2</div>Resize Image</h2>
 <p><label>Width: </label><input id="width"></p>
 <p><label>Height: </label><input id="height"></p>
-<p><h3>Image Preview: </h3></p>
+<p><b>Image Preview: </b></p>
 <p><canvas id="c"></canvas></p>
 <h2 class="header"><div class="no">3</div>Download Resized Image</h2>
 <p><a id="download" class="cta">Download Image</a></p>
@@ -91,12 +91,11 @@ function dataURItoBlob(dataURI) {
 
 document.getElementById('download').addEventListener('click', function() {
     downloadCanvas(this, output, 'test.png');
-	ga('send', 'event', 'Tools', 'Complete', 'Image Resized');
 }, false);
 
 </script>
 <style>
-p, h3 {
+p {
 	margin-left: 60px;
 }
 label {
