@@ -7,7 +7,7 @@ description: Resize and crop your pictures online for free. Resize photos for Fa
 ---
 <h2 class="header"><div class="no">1</div>Load Image</h2>
 <div class="marginLeft">
-	<p><span id="imageLoaderContainer"><input type="file" id="imageLoader" name="imageLoader"/><label for="imageLoader" id="imageLoaderText">Click to load image</label></span></p>
+	<p><span id="imageLoaderContainer"><input type="file" id="imageLoader" name="imageLoader"/><label for="imageLoader" id="imageLoaderText">Click to load image or drop files</label></span></p>
 </div>
 <h2 class="header"><div class="no">2</div>Resize Image</h2>
 <div class="marginLeft">
@@ -23,8 +23,9 @@ description: Resize and crop your pictures online for free. Resize photos for Fa
 
             </div>
             <div id="view2">
-                <p><label>Width: </label><input id="width"></p>
-				<p><label>Height: </label><input id="height"></p>
+                <p><label for="width">Width: </label><input id="width" name="width" type="number"></p>
+				<p><label for="height">Height: </label><input id="height" name="height" type="number"></p>
+				<p><label for="aspectRatio">Maintain aspect ratio </label><input type="checkbox" checked="true" id="aspectRatio" name="aspectRatio"></p>
             </div>
         </div>
 
@@ -44,12 +45,11 @@ var supportsFileDrop = function() {
 
 if (supportsFileDrop) {
 	var container = document.getElementById("imageLoaderContainer");
-	container.addEventListener('drag dragstart dragend dragover dragenter dragleave drop', function(e) {
-		console.log("event");
+	container.addEventListener('dragover', function(e) {
 	    e.preventDefault();
 		e.stopPropagation();
-	});
-	container.addEventListener('drop', loadImage);
+	}, true);
+	container.addEventListener('drop', dropEvent, true);
 } else {
 	document.getElementById("imageLoaderText").innerText = "Click to load image";
 }
@@ -58,16 +58,31 @@ var fileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];
 
 
 var img = {
-	fileName: "resized-Image.png",
+	fileName: "resizedImage.png",
 	data: new Image(),
 	fileSize: 0,
 	fileType: "image/png"
 };
 
+function dropEvent(e) {
+	e.preventDefault();
+	e.stopPropagation();
+	if (e.dataTransfer.files.length > 0) {
+		loadImage(e.dataTransfer.files[0]);
+	}
+
+}
+
+function uploadEvent(e) {
+	if (e.target.files.length > 0) {
+		loadImage(e.target.files[0]);
+	}
+}
+
 /**
 	Stores the uploaded image in the 'img' variable
 */
-function loadImage(e){
+function loadImage(file) {
     var reader = new FileReader();
     reader.onload = function(event){
         img.data.onload = function(){
@@ -77,9 +92,9 @@ function loadImage(e){
         }
         img.data.src = event.target.result;
     }
-    reader.readAsDataURL(e.target.files[0]);
-	img.fileName = e.target.files[0].name;
-	img.fileSize = e.target.files[0].size;
+    reader.readAsDataURL(file);
+	img.fileName = file.name;
+	img.fileSize = file.size;
     
 }
 
@@ -102,7 +117,18 @@ var resize = {
 	customSize: function(event, width, height) {
 		width = width || document.getElementById("width").value || 100;
 		height = height || document.getElementById("height").value || 100;
-	
+
+		if (document.getElementById("aspectRatio").checked) {
+			if (event.target.id === "width") {
+				height = Math.round((width/img.data.width)*img.data.height);
+				document.getElementById("height").value = height;
+			}
+			if (event.target.id === "height") {
+				width = Math.round((height/img.data.height)*img.data.width);
+				document.getElementById("width").value = width;
+			}
+		}
+
 		var canvas = document.createElement("canvas");
 		var ctx = canvas.getContext('2d');
 		
@@ -121,7 +147,7 @@ function updateOutputImage(href) {
 	document.getElementById("outputHREF").download = "rsz_" + img.fileName;
 }
 
-document.getElementById("imageLoader").addEventListener('change', loadImage, false);
+document.getElementById("imageLoader").addEventListener('change', uploadEvent, false);
 
 document.getElementById("width").addEventListener('input', resize.customSize, false);
 document.getElementById("height").addEventListener('input', resize.customSize, false);
