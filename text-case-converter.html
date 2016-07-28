@@ -6,24 +6,15 @@ title: Text Case Converter
 description: Convert your text to uppercase or lowercase.
 ---
 <p><textarea id="textArea" name="imageLoader"/></textarea></p>
-<p></p>
-<form action="">
-  <label><input type="radio" name="convertType" value="To lower case" id="lowerCase" checked="true">To lower case</label>
-  <label><input type="radio" name="convertType" value="Yo upper case">To upper case</label><br>
-</form>
+<p>
+	<label class="lightCTA"><input type="radio" name="convertType" id="lowerCase" checked="true"> To lower case</label>
+	<label class="lightCTA"><input type="radio" name="convertType"> To upper case</label>
+</p>
 <p><input type="button" class="cta" onclick="convert()" value="Convert Text"></p>
 <style>
-label {
-    padding: 10px;
-    background-color: #EAEEEF;
-    margin-right: 10px;
-}
 textarea {
 	width: 100%;
 	min-height: 170px;
-}
-form {
-    margin: 10px 0;
 }
 </style>
 <script>

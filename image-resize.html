@@ -2,8 +2,8 @@
 layout: default
 language: en-GB
 group: "side-nav"
-title: Free Online Image Resizer
-description: Resize and crop your pictures online for free. Resize photos for Facebook, Twitter, Pinterest, Reddit or Tumblr blog even on phone
+title: Online Image Resizer
+description: Resize and crop your pictures online for free. Resize photos for Facebook, Twitter, Pinterest, Reddit or Tumblr blog even on your phone.
 ---
 <h2 class="header"><div class="no">1 </div>Load Image</h2>
 <div class="marginLeft">
@@ -32,13 +32,11 @@ description: Resize and crop your pictures online for free. Resize photos for Fa
 	</div>
 <h2 class="header"><div class="no">3 </div>Output Image</h2>
 <div class="marginLeft">
-	<p>File type: <select id="fileType">
-	  <option value="image/png">PNG</option>
-	  <option value="image/jpeg">JPEG</option>
-	</select></p>
+	<p>File type:</p>
+	<label class="lightCTA"><input type="radio" name="outputFiletype" value="image/jpeg" checked="true"> JPEG</label>
+	<label class="lightCTA"><input type="radio" name="outputFiletype" value="image/png"> PNG</label>
+	<!--<label class="lightCTA"><input type="radio" name="outputFiletype" value="image/gif"> GIF</label>-->
 	<p><img id="outputImg"></p>
-	<p>Click on the image to download</p>
-	<p>For larger images right click the image and select save as</p>
 	<p><input type="button" value="Download" id="downloadButton" class="cta"></p>
 </div>
 <script src="lib/download.min.js" async></script>
@@ -76,9 +74,15 @@ var elems = {
 var img = {
 	fileName: "resizedImage.png",
 	data: new Image(),
+	canvas: document.createElement("canvas"),
 	fileSize: 0,
 	dataURI: "",
-	fileType: "image/png"
+	fileType: "image/png",
+	generateURI: function() {
+		var URI = img.canvas.toDataURL(document.querySelector('input[name="outputFiletype"]:checked').value);
+		img.dataURI = URI;
+		elems.imgOutput.src = URI;
+	}
 };
 
 var events = {
@@ -111,7 +115,7 @@ function loadImage(file) {
         img.data.src = event.target.result;
     }
     reader.readAsDataURL(file);
-	img.fileName = file.name;
+	img.fileName = file.name.split(".")[0];
 	img.fileSize = file.size;
     
 }
@@ -119,7 +123,7 @@ function loadImage(file) {
 var resize = {
 	percent: function(event, percent) {
 		percent = percent || elems.percentInput.value || 50;
-		var canvas = document.createElement("canvas");
+		var canvas = img.canvas;
 		var ctx = canvas.getContext('2d');
 		
 		var width = img.data.width * (percent/100);
@@ -130,7 +134,7 @@ var resize = {
 		
 		ctx.drawImage(img.data, 0, 0, width, height);
 		
-		updateOutputImage(canvas.toDataURL());
+		img.generateURI();
 	},
 	customSize: function(event, width, height) {
 		width = width || elems.widthInput.value || 100;
@@ -155,7 +159,7 @@ var resize = {
 		
 		ctx.drawImage(img.data, 0, 0, width, height);
 		
-		updateOutputImage(canvas.toDataURL());
+		img.generateURI();
 	}
 };
 
@@ -170,7 +174,8 @@ elems.widthInput.addEventListener('input', resize.customSize, false);
 elems.heightInput.addEventListener('input', resize.customSize, false);
 elems.percentInput.addEventListener('change', resize.percent, false);
 
-elems.downloadButton.addEventListener('click', function() { download(img.dataURI,"rsz_"+img.fileName, img.fileType) }, false);
+elems.downloadButton.addEventListener('click', function() { download(img.dataURI,"rsz_"+img.fileName, document.querySelector('input[name="outputFiletype"]:checked').value) }, false);
+document.querySelectorAll('input[name="outputFiletype"]').forEach(function(elem) { elem.addEventListener('change',img.generateURI) });
 
 var supportsFileDrop = function() {
   var div = document.createElement('div');

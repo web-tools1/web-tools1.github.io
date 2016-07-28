@@ -34,7 +34,7 @@ a{
 	cursor: pointer;
 }
 p {
-    margin: 10px 0;
+    margin: 12px 0;
 }
 ul {
     list-style: none;
@@ -154,7 +154,6 @@ footer .c {
 }
 input {
     padding: 5px;
-    margin: 5px;
     font-size: 1.1em;
     border: 1px solid #aaa;
     border-radius: 3px;
@@ -172,7 +171,7 @@ input[type=checkbox] {
     border: 0;
     padding: 15px 25px;
     background-color: #109010;
-    transition: background-color .5s;
+    transition: all .5s;
     color: white;
     font-weight: bold;
     cursor: pointer;
@@ -185,6 +184,10 @@ input[type=checkbox] {
     border: 1px solid #ccc;
     cursor: pointer;
     border-radius: 3px;
+	transition: all .5s;
+}
+.lightCTA:hover {
+    background-color: #eff1f3;
 }
 .heavyCTA {
 	max-width: 300px;
