@@ -2,82 +2,100 @@
 layout: default
 language: en-GB
 group: "side-nav"
-title: Online Image Resizer
+title: Free Online Image Resizer
 description: Resize and crop your pictures online for free. Resize photos for Facebook, Twitter, Pinterest, Reddit or Tumblr blog even on phone
 ---
 <h2 class="header"><div class="no">1</div>Load Image</h2>
 <div class="marginLeft">
-	<p><span id="imageLoaderContainer"><input type="file" id="imageLoader" name="imageLoader"/><label for="imageLoader" id="imageLoaderText">Click to load image or drop files</label></span></p>
+	<p><span id="imageLoaderContainer" class="heavyCTA"><input type="file" id="imageLoader" name="imageLoader"/><label for="imageLoader" id="imageLoaderText">Click to load image or drop files</label></span></p>
 </div>
 <h2 class="header"><div class="no">2</div>Resize Image</h2>
-<div class="marginLeft">
+	<div class="marginLeft">
         <p>Resize by: </p>
-		<p><ul class="tabs">
-            <li><a href="#view1">Percentage</a></li>
-            <li><a href="#view2">Custom Size</a></li>
-        </ul></p>
-        <div class="tabcontents">
-            <div id="view1">
-			    <label>Percentage</label><input id="percentage" type="range" min="1" max="125" step="1" oninput="document.getElementById('percentageDisp').value=this.value" onchange="document.getElementById('percentageDisp').value=this.value">
+		<p>
+			<label class="lightCTA"><input type="radio" id="percent" name="resizeType" tabGroup="resizeBy" checked="true"> Percent</label>
+			<label class="lightCTA"><input type="radio" id="custom"  name="resizeType" tabGroup="resizeBy"> Custom</label>
+        </p>
+        <div tabGroupContent="resizeBy">
+			<div contentFor="percent">
+				<p>
+					<label>Percentage</label><input id="percentage" type="range" min="1" max="125" step="1" oninput="document.getElementById('percentageDisp').value=this.value" onchange="document.getElementById('percentageDisp').value=this.value">
 					<input type="number" id="percentageDisp" min="1" max="100" value="50" oninput="document.getElementById('percentage').value=this.value" onchange="document.getElementById('percentage').value=this.value">    
-
-            </div>
-            <div id="view2">
-                <p><label for="width">Width: </label><input id="width" name="width" type="number"></p>
+				</p>
+			</div>
+			<div contentFor="custom">
+				<p><label for="width">Width: </label><input id="width" name="width" type="number"></p>
 				<p><label for="height">Height: </label><input id="height" name="height" type="number"></p>
 				<p><label for="aspectRatio">Maintain aspect ratio </label><input type="checkbox" checked="true" id="aspectRatio" name="aspectRatio"></p>
-            </div>
-        </div>
-
-
-</div>
+			</div>
+		</div>
+	</div>
 <h2 class="header"><div class="no">3</div>Output Image</h2>
 <div class="marginLeft">
-	<p><a id="outputHREF"><img id="outputImg"></a></p>
+	<p>File type: <select id="fileType">
+	  <option value="image/png">PNG</option>
+	  <option value="image/jpeg">JPEG</option>
+	</select></p>
+	<p><img id="outputImg"></p>
 	<p>Click on the image to download</p>
 	<p>For larger images right click the image and select save as</p>
+	<p><input type="button" value="Download" id="downloadButton" class="cta"></p>
 </div>
+<script src="lib/download.min.js" async></script>
 <script>
-var supportsFileDrop = function() {
-  var div = document.createElement('div');
-  return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
-}();
+"use strict";
+Object.prototype.forEach=function(c){for(var b=Object.keys(this),a=0;a<b.length;a++)c(this[b[a]],b[a])};
 
-if (supportsFileDrop) {
-	var container = document.getElementById("imageLoaderContainer");
-	container.addEventListener('dragover', function(e) {
-	    e.preventDefault();
-		e.stopPropagation();
-	}, true);
-	container.addEventListener('drop', dropEvent, true);
-} else {
-	document.getElementById("imageLoaderText").innerText = "Click to load image";
-}
+document.querySelectorAll("[tabGroup]").forEach(function(elem) {
+	elem.addEventListener("click", function(e) {
+		document.querySelectorAll("[tabGroupContent=" +e.target.attributes.tabGroup.value +"]").forEach(function(container) {
+			/* 		TODO: Change the height of the element to elem.clientHeight and then change it back to auto after ~1second 		*/
+			container.children.forEach(function(contentElem){if (contentElem.attributes.contentfor.value===e.target.id){contentElem.style.height='auto';contentElem.style.opacity=1}else{contentElem.style.height=0;contentElem.style.opacity=0}});
+		});
+	});
+	if(elem.checked)elem.click()
+});
+
 
 var fileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];  
+function byId(id) { return document.getElementById(id) };
 
+var elems = {
+	downloadButton:	byId("downloadButton"),
+
+	imgOutput:	byId("outputImg"),
+
+	fileTypeInput: byId("fileType"),
+	widthInput:	byId("width"),
+	heightInput: byId("height"),
+	fileInput: byId("imageLoader"),
+	percentInput: byId("percentage"),
+	aspectRatioInput: byId("aspectRatio")
+};
 
 var img = {
 	fileName: "resizedImage.png",
 	data: new Image(),
 	fileSize: 0,
+	dataURI: "",
 	fileType: "image/png"
 };
 
-function dropEvent(e) {
-	e.preventDefault();
-	e.stopPropagation();
-	if (e.dataTransfer.files.length > 0) {
-		loadImage(e.dataTransfer.files[0]);
+var events = {
+	drop: function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		if (e.dataTransfer.files.length > 0) {
+			loadImage(e.dataTransfer.files[0]);
+		}
+	},
+	upload: function(e) {
+		if (e.target.files.length > 0) {
+			loadImage(e.target.files[0]);
+		}
 	}
-
-}
-
-function uploadEvent(e) {
-	if (e.target.files.length > 0) {
-		loadImage(e.target.files[0]);
-	}
-}
+};
+ 
 
 /**
 	Stores the uploaded image in the 'img' variable
@@ -87,8 +105,8 @@ function loadImage(file) {
     reader.onload = function(event){
         img.data.onload = function(){
 			resize.percent(0, 100);
-			document.getElementById("width").value = img.data.width;
-			document.getElementById("height").value = img.data.height;
+			elems.widthInput.value = img.data.width;
+			elems.heightInput.value = img.data.height;
         }
         img.data.src = event.target.result;
     }
@@ -100,7 +118,7 @@ function loadImage(file) {
 
 var resize = {
 	percent: function(event, percent) {
-		percent = percent || document.getElementById("percentage").value || 50;
+		percent = percent || elems.percentInput.value || 50;
 		var canvas = document.createElement("canvas");
 		var ctx = canvas.getContext('2d');
 		
@@ -115,17 +133,17 @@ var resize = {
 		updateOutputImage(canvas.toDataURL());
 	},
 	customSize: function(event, width, height) {
-		width = width || document.getElementById("width").value || 100;
-		height = height || document.getElementById("height").value || 100;
+		width = width || elems.widthInput.value || 100;
+		height = height || elems.heightInput.value || 100;
 
-		if (document.getElementById("aspectRatio").checked) {
+		if (elems.aspectRatioInput.checked) {
 			if (event.target.id === "width") {
 				height = Math.round((width/img.data.width)*img.data.height);
-				document.getElementById("height").value = height;
+				elems.heightInput.value = height;
 			}
 			if (event.target.id === "height") {
 				width = Math.round((height/img.data.height)*img.data.width);
-				document.getElementById("width").value = width;
+				elems.widthInput.value = width;
 			}
 		}
 
@@ -142,46 +160,40 @@ var resize = {
 };
 
 function updateOutputImage(href) {
-	document.getElementById("outputImg").src = href;
-	document.getElementById("outputHREF").href = href;
-	document.getElementById("outputHREF").download = "rsz_" + img.fileName;
+	elems.imgOutput.src = href;
+	img.dataURI = href;
 }
 
-document.getElementById("imageLoader").addEventListener('change', uploadEvent, false);
+elems.fileInput.addEventListener('change', events.upload, false);
 
-document.getElementById("width").addEventListener('input', resize.customSize, false);
-document.getElementById("height").addEventListener('input', resize.customSize, false);
-document.getElementById("percentage").addEventListener('change', resize.percent, false);
+elems.widthInput.addEventListener('input', resize.customSize, false);
+elems.heightInput.addEventListener('input', resize.customSize, false);
+elems.percentInput.addEventListener('change', resize.percent, false);
 
+elems.downloadButton.addEventListener('click', function() { download(img.dataURI,"rsz_"+img.fileName, img.fileType) }, false);
 
-(function(){function h(a,b){this.i(a,b)}function f(a,b){return(new RegExp("(^| )"+b+"( |$)")).test(a.className)?!0:!1}function k(a,b,c){a.addEventListener?a.addEventListener(b,c,!1):a.attachEvent&&a.attachEvent("on"+b,c)}var l="mi"+function(){var a=window.location.pathname;-1!=a.indexOf("/")&&(a=a.split("/"));a=a[a.length-1]||"root";-1!=a.indexOf(".")&&(a=a.substring(0,a.indexOf(".")));20<a&&(a=a.substring(a.length-19));return a}();h.prototype={j:function(){var a=document.cookie.match(new RegExp(l+
-this.f+"=(\\d+)"));return a?a[1]:this.g()},g:function(){for(var a=0,b=this.a.length;a<b;a++)if(f(this.a[a].parentNode,"selected"))return a;return 0},h:function(a,b){var c=document.getElementById(a.c);if(c)for(this.l(c),c=0;c<this.a.length;c++)if(this.a[c]==a){var d=a.parentNode;f(d,"selected")||(d.className=""==d.className?"selected":d.className+" selected");b&&this.d&&this.k(this.f,c)}else d=this.a[c].parentNode,d.className=d.className.replace(/(^| )selected( |$)/,"$1"),d.className=d.className.replace(/ $/,
-"")},k:function(a,b){document.cookie=l+a+"="+b+"; path=/"},l:function(a){for(var b=0;b<this.b.length;b++)this.b[b].style.display=this.b[b].id==a.id?"block":"none"},m:function(){this.b=[];for(var a=this,b=0;b<this.a.length;b++){var c=document.getElementById(this.a[b].c);c&&(this.b.push(c),k(this.a[b],"click",function(b){var c=this;c===window&&(c=window.event.srcElement);a.h(c,1);b&&b.stopPropagation?b.stopPropagation():window.event.cancelBubble=!0;b=b?b:window.event;b.preventDefault&&b.preventDefault();
-return!1}))}},i:function(a,b){this.f=b;this.a=[];for(var c=a.getElementsByTagName("a"),d=/#([^?]+)/,e,g,f=0;f<c.length;f++)if(g=c[f],e=g.getAttribute("href"),-1!=e.indexOf("#")&&(e=e.match(d)))e=e[1],g.c=e,this.a.push(g);this.d="true"==(a.getAttribute("data-persist")||"").toLowerCase()?1:0;this.m();this.n()},n:function(){var a=this.d?parseInt(this.j()):this.g();a>=this.a.length&&(a=0);this.h(this.a[a],0)}};var m=[];(function(a){function b(){c||(c=!0,setTimeout(a,4))}var c=!1;if(document.addEventListener)document.addEventListener("DOMContentLoaded",
-b,!1);else if(document.attachEvent){try{var d=null!=window.frameElement}catch(f){}if(document.documentElement.doScroll&&!d){var e=function(){if(!c)try{document.documentElement.doScroll("left"),b()}catch(a){setTimeout(e,10)}};e()}document.attachEvent("onreadystatechange",function(){"complete"===document.readyState&&b()})}k(window,"load",b)})(function(){for(var a=document.getElementsByTagName("ul"),b=0,c=a.length;b<c;b++)f(a[b],"tabs")&&m.push(new h(a[b],b))});return{}})();</script>
+var supportsFileDrop = function() {
+  var div = document.createElement('div');
+  return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
+}();
+
+if (supportsFileDrop) {
+	var container = document.getElementById("imageLoaderContainer");
+	container.addEventListener('dragover', function(e) {
+	    e.preventDefault();
+		e.stopPropagation();
+	}, true);
+	container.addEventListener('drop', events.drop, true);
+} else {
+	document.getElementById("imageLoaderText").innerText = "Click to load image";
+}
+
+</script>
 <style>
-.marginLeft {
-	margin-left: 60px;
-}
-label {
-    min-width: 50px;
-    display: inline-block;
-}
-input {
-    padding: 5px;
-    margin: 5px;
-    font-size: 1.1em;
-}
 canvas, #outputImg{
 	max-width: 100%;
 	max-height: 300px;
 	border: 1px solid #ccc;
-}
-#imageLoaderContainer {
-    max-width: 300px;
-    height: 60px;
-    display: inline-block;
-    background-color: #16bf16;
 }
 #imageLoader {
     cursor: pointer;
@@ -198,27 +210,6 @@ canvas, #outputImg{
     transform: translate(-50%,-50%);
     display: inline-block;
 	cursor: pointer;
-}
-
-
-ul.tabs {
-    list-style: none;
-	list-style-type: none;
-    margin: 0;
-    padding: 0;
-	margin-bottom: 25px;
-}
-.tabs li {
-    display: inline-block;
-}
-.tabs li a {
-    background-color: #83909c;
-    padding: 8px 15px;
-    color: white;
-    text-decoration: none;
-}
-.tabs li.selected a {
-    background-color: #2867a5;
 }
 #percentageDisp {
     font-size: 13px;

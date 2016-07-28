@@ -137,7 +137,6 @@ header .bo {
 	padding: 8px 0;
 
 }
-
 .bo .c div {
 	float: right;
 }
@@ -157,4 +156,34 @@ footer .c {
 	#n {
 		width: 100%;
 	}
+}
+input[type=radio] {
+    margin: 0;
+}
+.marginLeft {
+	margin-left: 60px;
+}
+input {
+    padding: 5px;
+    margin: 5px;
+    font-size: 1.1em;
+}
+.lightCTA {
+	padding: 10px 15px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+.heavyCTA {
+	max-width: 300px;
+    height: 60px;
+    display: inline-block;
+    background-color: #16bf16;
+}
+[contentfor] {
+    overflow: hidden;
+    transition: opacity 1s ease-out;
+}
+label {
+    min-width: 50px;
+    display: inline-block;
 }
