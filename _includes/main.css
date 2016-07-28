@@ -2,7 +2,7 @@
 	padding: 0;
 	margin:0;
 }
-body{
+body {
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 	font-size: 15px;
 	color: #333;
@@ -13,7 +13,7 @@ b {
     font-size: 1em;
     color: #274C80;
 }
-.bottom{
+.bottom {
 	position: fixed;
 	bottom: 0;
 	width: 100%;
@@ -47,7 +47,7 @@ ul {
 #n h2 {
     font-size: 1em;
 }
-#n ul{
+#n ul {
 	width: 100%;
 	border: 1px solid #ccc;
     border-radius: 3px;
@@ -73,11 +73,11 @@ ul {
 	background-color: #eee;
 	padding: 8px 15px 8px 33px;
 }
-h1{
+h1 {
 	display: inline-block;
 	font-size: 1.8em;
 }
-h2{
+h2 {
 	font-size: 1.3em;
 }
 h3 {
@@ -85,7 +85,7 @@ h3 {
     font-size: 1em;
     color: #274C80;
 }
-.c{
+.c {
 	max-width: 1024px;
 	margin: 0 auto;
 	padding: 5px;
@@ -99,15 +99,7 @@ h3 {
 	display: table;
 	clear: both;
 }
-.cta {
-	border: 0;
-	padding: 15px 25px;
-	background-color: #109010;
-	color: white;
-	font-weight: bold;
-	cursor: pointer;
-}
-.j, .j a{
+.j, .j a {
 	background-color: #222;
 	color: #fff;
 	text-align: center;
@@ -136,7 +128,6 @@ header .to {
 header .bo {
 	background-color: #2867A5;
 	padding: 8px 0;
-
 }
 .bo .c div {
 	float: right;
@@ -158,9 +149,6 @@ footer .c {
 		width: 100%;
 	}
 }
-input[type=radio] {
-    margin: 0;
-}
 .marginLeft {
 	margin-left: 60px;
 }
@@ -168,11 +156,35 @@ input {
     padding: 5px;
     margin: 5px;
     font-size: 1.1em;
+    border: 1px solid #aaa;
+    border-radius: 3px;
+}
+input[type=radio] {
+    margin: 0;
+}
+input[type=checkbox] {
+    width: 15px;
+    height: 15px;
+    margin: 0 5px;
+    vertical-align: bottom;
+}
+.cta {
+    border: 0;
+    padding: 15px 25px;
+    background-color: #109010;
+    transition: background-color .5s;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+.cta:hover {
+    background-color: #1db51d;
 }
 .lightCTA {
-	padding: 10px 15px;
+    padding: 10px 15px;
     border: 1px solid #ccc;
     cursor: pointer;
+    border-radius: 3px;
 }
 .heavyCTA {
 	max-width: 300px;
