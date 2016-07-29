@@ -5,44 +5,49 @@ group: "side-nav"
 title: Online Image Resizer
 description: Resize and crop your pictures online for free. Resize photos for Facebook, Twitter, Pinterest, Reddit or Tumblr blog even on your phone.
 ---
-<h2 class="header"><div class="no">1 </div>Load Image</h2>
-<div class="marginLeft">
-	<p><label for="imageLoader" class="dropZone"><span>Drop files here</br>OR</br>Click to load</span><input type="file" id="imageLoader" name="imageLoader"/></label></p>
-</div>
-<h2 class="header"><div class="no">2 </div>Resize Image</h2>
+<div class="k">
+	<h2 class="header"><div class="no">1 </div>Load Image</h2>
 	<div class="marginLeft">
-        <p>Resize by: </p>
-		<p>
-			<label class="lightCTA"><input type="radio" id="percent" name="resizeType" tabGroup="resizeBy" checked="true"> Scale Image</label>
-			<label class="lightCTA"><input type="radio" id="custom"  name="resizeType" tabGroup="resizeBy"> Custom Size</label>
-			<!--<label class="lightCTA"><input type="radio" id="crop"  name="resizeType" tabGroup="resizeBy"> Crop</label>-->
-        </p>
-        <div tabGroupContent="resizeBy">
-			<div contentFor="percent">
-				<p>
-					<label>Percentage</label><input id="percentage" type="range" min="1" max="125" step="1" oninput="document.getElementById('percentageDisp').value=this.value" onchange="document.getElementById('percentageDisp').value=this.value">
-					<input type="number" id="percentageDisp" min="1" max="100" value="50" oninput="document.getElementById('percentage').value=this.value" onchange="document.getElementById('percentage').value=this.value">    
-				</p>
-			</div>
-			<div contentFor="custom">
-				<p><label for="width">Width: </label><input id="width" name="width" type="number"></p>
-				<p><label for="height">Height: </label><input id="height" name="height" type="number"></p>
-				<p><label for="aspectRatio">Maintain aspect ratio </label><input type="checkbox" checked="true" id="aspectRatio" name="aspectRatio"></p>
-			</div>
-			<div contentFor="crop">
-				<p><label for="width">Width: </label><input id="width" name="width" type="number"></p>
-				<p><label for="height">Height: </label><input id="height" name="height" type="number"></p>
-				<p><label for="aspectRatio">Maintain aspect ratio </label><input type="checkbox" checked="true" id="aspectRatio" name="aspectRatio"></p>
+		<p><label for="imageLoader" class="dropZone"><span>Drop files here</br>OR</br>Click to load</span><input type="file" id="imageLoader" name="imageLoader"/></label></p>
+	</div>
+	<h2 class="header"><div class="no">2 </div>Resize Image</h2>
+		<div class="marginLeft">
+			<p>Resize by: </p>
+			<p>
+				<label class="lightCTA"><input type="radio" id="percent" name="resizeType" tabGroup="resizeBy" checked="true"> Scale Image</label>
+				<label class="lightCTA"><input type="radio" id="custom"  name="resizeType" tabGroup="resizeBy"> Custom Size</label>
+				<!--<label class="lightCTA"><input type="radio" id="crop"  name="resizeType" tabGroup="resizeBy"> Crop</label>-->
+			</p>
+			<div tabGroupContent="resizeBy">
+				<div contentFor="percent">
+					<p>
+						<label>Percentage</label><input id="percentage" type="range" min="1" max="125" step="1" oninput="document.getElementById('percentageDisp').value=this.value" onchange="document.getElementById('percentageDisp').value=this.value">
+						<input type="number" id="percentageDisp" min="1" max="100" value="50" oninput="document.getElementById('percentage').value=this.value" onchange="document.getElementById('percentage').value=this.value">    
+					</p>
+				</div>
+				<div contentFor="custom">
+					<p><label for="width">Width: </label><input id="width" name="width" type="number"></p>
+					<p><label for="height">Height: </label><input id="height" name="height" type="number"></p>
+					<p><label for="aspectRatio">Maintain aspect ratio </label><input type="checkbox" checked="true" id="aspectRatio" name="aspectRatio"></p>
+				</div>
+				<div contentFor="crop">
+					<p><label for="width">Width: </label><input id="width" name="width" type="number"></p>
+					<p><label for="height">Height: </label><input id="height" name="height" type="number"></p>
+					<p><label for="aspectRatio">Maintain aspect ratio </label><input type="checkbox" checked="true" id="aspectRatio" name="aspectRatio"></p>
+				</div>
 			</div>
 		</div>
+	<h2 class="header"><div class="no">3 </div>Output Image</h2>
+	<div class="marginLeft">
+		<p>File type:</p>
+		<label class="lightCTA"><input type="radio" name="outputFiletype" value="image/jpeg" checked="true"> JPEG</label>
+		<label class="lightCTA"><input type="radio" name="outputFiletype" value="image/png"> PNG</label>
+		
+		<p><input type="button" value="Download" id="downloadButton" class="cta"></p>
 	</div>
-<h2 class="header"><div class="no">3 </div>Output Image</h2>
-<div class="marginLeft">
-	<p>File type:</p>
-	<label class="lightCTA"><input type="radio" name="outputFiletype" value="image/jpeg" checked="true"> JPEG</label>
-	<label class="lightCTA"><input type="radio" name="outputFiletype" value="image/png"> PNG</label>
+</div><div class="k">
+	<h3>Preview:</h3>
 	<p><img id="outputImg"></p>
-	<p><input type="button" value="Download" id="downloadButton" class="cta"></p>
 </div>
 <script src="lib/download.min.js" async></script>
 <script>
