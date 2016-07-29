@@ -7,14 +7,15 @@ description: Resize and crop your pictures online for free. Resize photos for Fa
 ---
 <h2 class="header"><div class="no">1 </div>Load Image</h2>
 <div class="marginLeft">
-	<p><span id="imageLoaderContainer" class="heavyCTA"><input type="file" id="imageLoader" name="imageLoader"/><label for="imageLoader" id="imageLoaderText">Click to load image or drop files</label></span></p>
+	<p><label for="imageLoader" class="dropZone"><span>Drop files here</br>OR</br>Click to load</span><input type="file" id="imageLoader" name="imageLoader"/></label></p>
 </div>
 <h2 class="header"><div class="no">2 </div>Resize Image</h2>
 	<div class="marginLeft">
         <p>Resize by: </p>
 		<p>
-			<label class="lightCTA"><input type="radio" id="percent" name="resizeType" tabGroup="resizeBy" checked="true"> Percent</label>
-			<label class="lightCTA"><input type="radio" id="custom"  name="resizeType" tabGroup="resizeBy"> Custom</label>
+			<label class="lightCTA"><input type="radio" id="percent" name="resizeType" tabGroup="resizeBy" checked="true"> Scale Image</label>
+			<label class="lightCTA"><input type="radio" id="custom"  name="resizeType" tabGroup="resizeBy"> Custom Size</label>
+			<!--<label class="lightCTA"><input type="radio" id="crop"  name="resizeType" tabGroup="resizeBy"> Crop</label>-->
         </p>
         <div tabGroupContent="resizeBy">
 			<div contentFor="percent">
@@ -28,6 +29,11 @@ description: Resize and crop your pictures online for free. Resize photos for Fa
 				<p><label for="height">Height: </label><input id="height" name="height" type="number"></p>
 				<p><label for="aspectRatio">Maintain aspect ratio </label><input type="checkbox" checked="true" id="aspectRatio" name="aspectRatio"></p>
 			</div>
+			<div contentFor="crop">
+				<p><label for="width">Width: </label><input id="width" name="width" type="number"></p>
+				<p><label for="height">Height: </label><input id="height" name="height" type="number"></p>
+				<p><label for="aspectRatio">Maintain aspect ratio </label><input type="checkbox" checked="true" id="aspectRatio" name="aspectRatio"></p>
+			</div>
 		</div>
 	</div>
 <h2 class="header"><div class="no">3 </div>Output Image</h2>
@@ -35,7 +41,6 @@ description: Resize and crop your pictures online for free. Resize photos for Fa
 	<p>File type:</p>
 	<label class="lightCTA"><input type="radio" name="outputFiletype" value="image/jpeg" checked="true"> JPEG</label>
 	<label class="lightCTA"><input type="radio" name="outputFiletype" value="image/png"> PNG</label>
-	<!--<label class="lightCTA"><input type="radio" name="outputFiletype" value="image/gif"> GIF</label>-->
 	<p><img id="outputImg"></p>
 	<p><input type="button" value="Download" id="downloadButton" class="cta"></p>
 </div>
@@ -62,7 +67,8 @@ var elems = {
 	downloadButton:	byId("downloadButton"),
 
 	imgOutput:	byId("outputImg"),
-
+	
+	dropZone: document.querySelector(".dropZone"),
 	fileTypeInput: byId("fileType"),
 	widthInput:	byId("width"),
 	heightInput: byId("height"),
@@ -106,7 +112,7 @@ var events = {
 */
 function loadImage(file) {
     var reader = new FileReader();
-    reader.onload = function(event){
+    reader.onload = function(event){console.log(event);
         img.data.onload = function(){
 			resize.percent(0, 100);
 			elems.widthInput.value = img.data.width;
@@ -183,12 +189,17 @@ var supportsFileDrop = function() {
 }();
 
 if (supportsFileDrop) {
-	var container = document.getElementById("imageLoaderContainer");
-	container.addEventListener('dragover', function(e) {
+	elems.dropZone.addEventListener('dragover', function(e) {
+		elems.dropZone.classList.add("dragover");
 	    e.preventDefault();
 		e.stopPropagation();
 	}, true);
-	container.addEventListener('drop', events.drop, true);
+	elems.dropZone.addEventListener('dragleave', function(e) {
+		elems.dropZone.classList.remove("dragover");
+	    e.preventDefault();
+		e.stopPropagation();
+	}, true);
+	elems.dropZone.addEventListener('drop', events.drop, true);
 } else {
 	document.getElementById("imageLoaderText").innerText = "Click to load image";
 }
@@ -201,20 +212,22 @@ canvas, #outputImg{
 	border: 1px solid #ccc;
 }
 #imageLoader {
-    cursor: pointer;
-    margin: 0;
-    width: 100%;
-    height: 100%;
     opacity: 0;
+    display: none;
 }
-#imageLoaderText {
-    position: relative;
-    top: -30px;
-    color: white;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    display: inline-block;
-	cursor: pointer;
+.dropZone {
+	display: inline-block;
+    cursor: pointer;
+    background-color: #F1F1F1;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    padding: 30px 45px;
+	text-align: center;
+	transition: all .5s;
+}
+.dropZone.dragover, .dropZone:hover {
+	border: 2px dashed #999;
+	background-color: #E6E6E6;
 }
 #percentageDisp {
     font-size: 13px;
