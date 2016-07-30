@@ -6,7 +6,6 @@ body {
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 	font-size: 15px;
 	color: #333;
-	margin-bottom: 60px;
 }
 b {
     font-weight: bold;
@@ -24,9 +23,17 @@ b {
 header, footer, nav {
 	display: block;
 }
-footer{
+footer {
 	background-color: #F5F5F5;
 	margin-top: 15px;
+}
+footer ul {
+    max-width: 500px;
+    display: inline-block;
+}
+footer li {
+    display: inline-block;
+    width: 33%;
 }
 a{
 	color: #0076a4;
@@ -115,7 +122,7 @@ footer .c {
 .marginLeft {
 	margin-left: 60px;
 }
-input {
+input, textarea {
     padding: 5px;
     font-size: 1.1em;
     border: 1px solid #aaa;
@@ -165,4 +172,14 @@ input[type=checkbox] {
 label {
     min-width: 50px;
     display: inline-block;
+}
+@media (max-width: 750px) {
+	.k {
+		display: block;
+		float: none;
+		width: auto;
+	}
+	.to .c {
+		text-align: center;
+	}
 }
