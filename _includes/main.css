@@ -27,15 +27,22 @@ footer {
 	background-color: #F5F5F5;
 	margin-top: 15px;
 }
+footer .c {
+	padding: 20px;
+	text-align: center;
+}
 footer ul {
     max-width: 500px;
     display: inline-block;
+	text-align: left;
 }
 footer li {
     display: inline-block;
     width: 33%;
+	margin: 3px 0;
+	text-align: center;
 }
-a{
+a {
 	color: #0076a4;
 	text-decoration: none;
 	cursor: pointer;
@@ -112,9 +119,6 @@ header .bo {
 }
 .bo .c div {
 	float: right;
-}
-footer .c {
-	padding: 20px;
 }
 .pw-button {
 	margin-left: 8px;
