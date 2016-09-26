@@ -117,6 +117,12 @@ header .bo {
 	background-color: #2867A5;
 	padding: 8px 0;
 }
+header a img {
+    transition: opacity .5s;
+}
+header a img:hover {
+    opacity: .7;
+}
 .bo .c div {
 	float: right;
 }

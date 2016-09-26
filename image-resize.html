@@ -49,7 +49,9 @@ description: Resize and crop your pictures online for free. Resize photos for Fa
 	<h3>Preview:</h3>
 	<p><img id="outputImg"></p>
 </div>
-<script src="lib/download.min.js" async></script>
+<script src="lib/Blob.js" async></script>
+<script src="lib/canvas-toBlob.js" async></script>
+<script src="lib/FileSaver.js" async></script>
 <script>
 "use strict";
 Object.prototype.forEach=function(c){for(var b=Object.keys(this),a=0;a<b.length;a++)c(this[b[a]],b[a])};
@@ -83,7 +85,7 @@ var elems = {
 };
 
 var img = {
-	fileName: "resizedImage.png",
+	fileName: "resizedImage",
 	data: new Image(),
 	canvas: document.createElement("canvas"),
 	fileSize: 0,
@@ -117,7 +119,7 @@ var events = {
 */
 function loadImage(file) {
     var reader = new FileReader();
-    reader.onload = function(event){console.log(event);
+    reader.onload = function(event){
         img.data.onload = function(){
 			resize.percent(0, 100);
 			elems.widthInput.value = img.data.width;
@@ -185,7 +187,14 @@ elems.widthInput.addEventListener('input', resize.customSize, false);
 elems.heightInput.addEventListener('input', resize.customSize, false);
 elems.percentInput.addEventListener('change', resize.percent, false);
 
-elems.downloadButton.addEventListener('click', function() { download(img.dataURI,"rsz_"+img.fileName, document.querySelector('input[name="outputFiletype"]:checked').value) }, false);
+elems.downloadButton.addEventListener('click', function() { 
+	var ext = document.querySelector('input[name="outputFiletype"]:checked').value.split("/")[1];
+	var mimeType = "image/"+ext;
+	img.canvas.toBlob(function(blob) {
+		
+		saveAs(blob, "rsz_"+img.fileName+"." +ext);
+	}, mimeType);
+}, false);
 document.querySelectorAll('input[name="outputFiletype"]').forEach(function(elem) { elem.addEventListener('change',img.generateURI) });
 
 var supportsFileDrop = function() {
