@@ -130,7 +130,7 @@ function loadImage(file) {
     reader.readAsDataURL(file);
 	img.fileName = file.name.split(".")[0];
 	img.fileSize = file.size;
-    
+	ga('send', 'event', "Image Resize", "Image Uploaded", img.fileName, img.fileSize);
 }
 
 var resize = {
@@ -191,8 +191,8 @@ elems.downloadButton.addEventListener('click', function() {
 	var ext = document.querySelector('input[name="outputFiletype"]:checked').value.split("/")[1];
 	var mimeType = "image/"+ext;
 	img.canvas.toBlob(function(blob) {
-		
 		saveAs(blob, "rsz_"+img.fileName+"." +ext);
+		ga('send', 'event', "Image Resize", "Image Downloaded");
 	}, mimeType);
 }, false);
 document.querySelectorAll('input[name="outputFiletype"]').forEach(function(elem) { elem.addEventListener('change',img.generateURI) });
