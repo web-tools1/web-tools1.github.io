@@ -6,30 +6,24 @@ title: Persistent Notepad
 description: Online notepad with persistence.
 ---
 <p>The contents typed into the notepad save instantly to your browser's storage and will be loaded when the page is initially loaded.</p>
-<div id="notepad" contenteditable></div>
+<textarea id="notepad" placeholder="Type here"></textarea>
 <script>
 	var notepad = document.getElementById("notepad");
 	
-	if (typeof localStorage.notepad === 'string') notepad.innerHTML = localStorage.notepad;
+	if (typeof localStorage.notepad === 'string') notepad.value = localStorage.notepad;
 	
 	function saveNotepad() {
-		console.log("change");
-		localStorage.notepad = notepad.innerHTML;
+		localStorage.notepad = notepad.value;
 	}
 	
-	var html = notepad.innerHTML;
-	function checkForChanges() {
-		if (notepad.innerHTML !== html) {
-			saveNotepad();
-			html = notepad.innerHTML;
-		}
-		requestAnimationFrame(checkForChanges);
-	}
-	checkForChanges();
+	notepad.addEventListener('change', function(e) {
+		saveNotepad();
+	});
 </script>
 <style>
 #notepad {
 	min-height: 300px;
 	border: 1px solid #ccc;
+	width: 100%;
 }
 </style>
