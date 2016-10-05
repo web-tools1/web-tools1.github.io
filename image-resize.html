@@ -8,15 +8,20 @@ description: Resize and crop your pictures online for free. Resize photos for Fa
 <div class="k">
 	<h2 class="header"><div class="no">1 </div>Load Image</h2>
 	<div class="marginLeft">
-		<p><label for="imageLoader" class="dropZone"><span>Drop files here</br>OR</br>Click to load</span><input type="file" id="imageLoader" name="imageLoader"/></label></p>
+		<label class="dropZone"><span><p>Drop files here</p><p>OR</p><p><span class="cta">Load Image</span></p></span><input type="file" id="fileUpload" name="imageLoader"/></label>
 	</div>
+	<h2 class="header"><div class="no">2 </div>Crop Image (Optional)</h2>
+		<div class="marginLeft">
+			<p>Click and Drag on the image to select a crop area.</p>
+			<p><span style="display:inline-block"><canvas id="cropCanvas" width="400px" height="300px"></span></p>
+			<input type="button" class="lightCTA" value="Clear Crop Selection" onclick="$('#cropCanvas').clearCropArea()">
+		</div>
 	<h2 class="header"><div class="no">2 </div>Resize Image</h2>
 		<div class="marginLeft">
 			<p>Resize by: </p>
 			<p>
 				<label class="lightCTA"><input type="radio" id="percent" name="resizeType" tabGroup="resizeBy" checked="true"> Scale Image</label>
 				<label class="lightCTA"><input type="radio" id="custom"  name="resizeType" tabGroup="resizeBy"> Custom Size</label>
-				<!--<label class="lightCTA"><input type="radio" id="crop"  name="resizeType" tabGroup="resizeBy"> Crop</label>-->
 			</p>
 			<div tabGroupContent="resizeBy">
 				<div contentFor="percent">
@@ -26,11 +31,6 @@ description: Resize and crop your pictures online for free. Resize photos for Fa
 					</p>
 				</div>
 				<div contentFor="custom">
-					<p><label for="width">Width: </label><input id="width" name="width" type="number"></p>
-					<p><label for="height">Height: </label><input id="height" name="height" type="number"></p>
-					<p><label for="aspectRatio">Maintain aspect ratio </label><input type="checkbox" checked="true" id="aspectRatio" name="aspectRatio"></p>
-				</div>
-				<div contentFor="crop">
 					<p><label for="width">Width: </label><input id="width" name="width" type="number"></p>
 					<p><label for="height">Height: </label><input id="height" name="height" type="number"></p>
 					<p><label for="aspectRatio">Maintain aspect ratio </label><input type="checkbox" checked="true" id="aspectRatio" name="aspectRatio"></p>
@@ -45,178 +45,95 @@ description: Resize and crop your pictures online for free. Resize photos for Fa
 		
 		<p><input type="button" value="Download" id="downloadButton" class="cta"></p>
 	</div>
-</div><div class="k">
-	<h3>Preview:</h3>
-	<p><img id="outputImg"></p>
 </div>
-<script src="lib/Blob.js" async></script>
-<script src="lib/canvas-toBlob.js" async></script>
-<script src="lib/FileSaver.js" async></script>
+<script src="/lib/Framework.min.js"></script>
 <script>
 "use strict";
-Object.prototype.forEach=function(c){for(var b=Object.keys(this),a=0;a<b.length;a++)c(this[b[a]],b[a])};
 
 document.querySelectorAll("[tabGroup]").forEach(function(elem) {
 	elem.addEventListener("click", function(e) {
 		document.querySelectorAll("[tabGroupContent=" +e.target.attributes.tabGroup.value +"]").forEach(function(container) {
-			/* 		TODO: Change the height of the element to elem.clientHeight and then change it back to auto after ~1second 		*/
 			container.children.forEach(function(contentElem){if (contentElem.attributes.contentfor.value===e.target.id){contentElem.style.height='auto';contentElem.style.opacity=1}else{contentElem.style.height=0;contentElem.style.opacity=0}});
 		});
 	});
-	if(elem.checked)elem.click()
+	if (elem.checked) elem.click()
 });
 
 
-var fileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];  
-function byId(id) { return document.getElementById(id) };
-
-var elems = {
-	downloadButton:	byId("downloadButton"),
-
-	imgOutput:	byId("outputImg"),
-	
-	dropZone: document.querySelector(".dropZone"),
-	fileTypeInput: byId("fileType"),
-	widthInput:	byId("width"),
-	heightInput: byId("height"),
-	fileInput: byId("imageLoader"),
-	percentInput: byId("percentage"),
-	aspectRatioInput: byId("aspectRatio")
-};
-
-var img = {
-	fileName: "resizedImage",
-	data: new Image(),
-	canvas: document.createElement("canvas"),
-	fileSize: 0,
-	dataURI: "",
-	fileType: "image/png",
-	generateURI: function() {
-		var URI = img.canvas.toDataURL(document.querySelector('input[name="outputFiletype"]:checked').value);
-		img.dataURI = URI;
-		elems.imgOutput.src = URI;
-	}
-};
-
-var events = {
-	drop: function(e) {
-		e.preventDefault();
-		e.stopPropagation();
-		if (e.dataTransfer.files.length > 0) {
-			loadImage(e.dataTransfer.files[0]);
-		}
-	},
-	upload: function(e) {
-		if (e.target.files.length > 0) {
-			loadImage(e.target.files[0]);
-		}
-	}
-};
  
 
-/**
-	Stores the uploaded image in the 'img' variable
-*/
-function loadImage(file) {
-    var reader = new FileReader();
-    reader.onload = function(event){
-        img.data.onload = function(){
-			resize.percent(0, 100);
-			elems.widthInput.value = img.data.width;
-			elems.heightInput.value = img.data.height;
-        }
-        img.data.src = event.target.result;
-    }
-    reader.readAsDataURL(file);
-	img.fileName = file.name.split(".")[0];
-	img.fileSize = file.size;
-	ga('send', 'event', "Image Resize", "Image Uploaded", img.fileName, img.fileSize);
-}
+// New framework
+var img = new resizeFramework.Img();
+$('#fileUpload').addEventListener('change', function(e) { img.uploadEvent(e); }, false);
 
-var resize = {
-	percent: function(event, percent) {
-		percent = percent || elems.percentInput.value || 50;
-		var canvas = img.canvas;
-		var ctx = canvas.getContext('2d');
-		
-		var width = img.data.width * (percent/100);
-		var height = img.data.height * (percent/100);
-		
-		canvas.width = width;
-		canvas.height = height;
-		
-		ctx.drawImage(img.data, 0, 0, width, height);
-		
-		img.generateURI();
-	},
-	customSize: function(event, width, height) {
-		width = width || elems.widthInput.value || 100;
-		height = height || elems.heightInput.value || 100;
+img.installCropping($('#cropCanvas'));
 
-		if (elems.aspectRatioInput.checked) {
-			if (event.target.id === "width") {
-				height = Math.round((width/img.data.width)*img.data.height);
-				elems.heightInput.value = height;
-			}
-			if (event.target.id === "height") {
-				width = Math.round((height/img.data.height)*img.data.width);
-				elems.widthInput.value = width;
-			}
-		}
+$("#percentage").addEventListener("change", percentChanged);
+$("#percentageDisp").addEventListener("change", percentChanged);
 
-		var canvas = document.createElement("canvas");
-		var ctx = canvas.getContext('2d');
-		
-		canvas.width = width;
-		canvas.height = height;
-		
-		ctx.drawImage(img.data, 0, 0, width, height);
-		
-		img.generateURI();
-	}
+function percentChanged() {
+	var percent = $("#percentage").value;
+	img.resizeBy.percent(percent);
 };
 
-function updateOutputImage(href) {
-	elems.imgOutput.src = href;
-	img.dataURI = href;
+$("#width").addEventListener("change", customSizeChanged);
+$("#height").addEventListener("change", customSizeChanged);
+
+function customSizeChanged() {
+	var width = $("#width").value;
+	var height = $("#height").value;
+	img.resizeBy.customSize(width, height);
 }
 
-elems.fileInput.addEventListener('change', events.upload, false);
+$('#downloadButton').addEventListener('click', function(e) { 
+	if ($("#percent").checked) {
+		percentChanged(); // Resize by percent
+	} else {
+		customSizeChanged(); // Resize by custom size
+	}
 
-elems.widthInput.addEventListener('input', resize.customSize, false);
-elems.heightInput.addEventListener('input', resize.customSize, false);
-elems.percentInput.addEventListener('change', resize.percent, false);
+	var fileType = $('input[name="outputFiletype"]:checked').value.split("/")[1];
+	img.download(fileType); 
+});
 
-elems.downloadButton.addEventListener('click', function() { 
-	var ext = document.querySelector('input[name="outputFiletype"]:checked').value.split("/")[1];
-	var mimeType = "image/"+ext;
-	img.canvas.toBlob(function(blob) {
-		saveAs(blob, "rsz_"+img.fileName+"." +ext);
-		ga('send', 'event', "Image Resize", "Image Downloaded");
-	}, mimeType);
-}, false);
-document.querySelectorAll('input[name="outputFiletype"]').forEach(function(elem) { elem.addEventListener('change',img.generateURI) });
-
-var supportsFileDrop = function() {
-  var div = document.createElement('div');
-  return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
-}();
-
-if (supportsFileDrop) {
-	elems.dropZone.addEventListener('dragover', function(e) {
-		elems.dropZone.classList.add("dragover");
-	    e.preventDefault();
-		e.stopPropagation();
-	}, true);
-	elems.dropZone.addEventListener('dragleave', function(e) {
-		elems.dropZone.classList.remove("dragover");
-	    e.preventDefault();
-		e.stopPropagation();
-	}, true);
-	elems.dropZone.addEventListener('drop', events.drop, true);
+if (resizeFramework.fileDropSupported) {
+	$(".dropZone").addEventListener('dragover', function(e) {
+		this.classList.add("dragover");
+	});
+	
+	$(".dropZone").addEventListener('dragleave', function(e) {
+		this.classList.remove("dragover");
+	});	
+	
+	document.body.addEventListener('drop', function(e) { img.dropEvent(e) }, true);
 } else {
-	document.getElementById("imageLoaderText").innerText = "Click to load image";
+	$(".dropZone").innerText = "Click to load image";
 }
+
+img.map("imageLoad", function() { img.resizeBy.percent($("#percentage").value); });
+img.map("imageLoad", function(width, height) { 
+	$("#width").value = width;
+	$("#height").value = height;
+});
+
+img.map("imageCropped", function(width, height) { 
+	$("#width").value = Math.round(width);
+	$("#height").value = Math.round(height);
+});
+
+$("#width").addEventListener("change", function(e) {
+	if ($("#aspectRatio").checked) {
+		var height = ($("#width").value/img.cropData.sWidth)*img.cropData.sHeight;
+		$("#height").value = Math.round(height);
+	}
+});
+
+$("#height").addEventListener("change", function(e) {
+	if ($("#aspectRatio").checked) {
+		var width = ($("#height").value/img.cropData.sHeight)*img.cropData.sWidth;
+		$("#width").value = Math.round(width);
+	}
+});
 
 </script>
 <style>
@@ -224,8 +141,9 @@ canvas, #outputImg{
 	max-width: 100%;
 	max-height: 300px;
 	border: 1px solid #ccc;
+	cursor: crosshair;
 }
-#imageLoader {
+#fileUpload {
     opacity: 0;
     display: none;
 }
@@ -239,7 +157,7 @@ canvas, #outputImg{
 	text-align: center;
 	transition: all .5s;
 }
-.dropZone.dragover, .dropZone:hover {
+.dragover, .dropZone:hover {
 	border: 2px dashed #999;
 	background-color: #E6E6E6;
 }
