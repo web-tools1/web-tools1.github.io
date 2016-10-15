@@ -53,7 +53,15 @@ description: Resize and crop your pictures online for free. Resize photos for Fa
 document.querySelectorAll("[tabGroup]").forEach(function(elem) {
 	elem.addEventListener("click", function(e) {
 		document.querySelectorAll("[tabGroupContent=" +e.target.attributes.tabGroup.value +"]").forEach(function(container) {
-			container.children.forEach(function(contentElem){if (contentElem.attributes.contentfor.value===e.target.id){contentElem.style.height='auto';contentElem.style.opacity=1}else{contentElem.style.height=0;contentElem.style.opacity=0}});
+			container.children.forEach(function(contentElem){
+				if (contentElem.attributes.contentFor.value===e.target.id) {
+					contentElem.style.height='auto';
+					contentElem.style.opacity=1
+				} else {
+					contentElem.style.height=0;
+					contentElem.style.opacity=0
+				}
+			});
 		});
 	});
 	if (elem.checked) elem.click()
