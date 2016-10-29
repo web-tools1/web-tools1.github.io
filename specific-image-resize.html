@@ -1,0 +1,182 @@
+---
+layout: default
+language: en-GB
+title: Specific Size Image Resizer
+description: Resize and crop your pictures online to a specific resolution.
+---
+<style>
+.hide {
+	display: none;	
+}
+section {
+	text-align: center;
+}
+#fileUpload { 
+	opacity:0;
+	display:none;
+}
+.dropZone {
+	display:inline-block;
+	cursor:pointer;
+	background-color:#F1F1F1;
+	border:2px dashed #ccc;
+	border-radius:10px;
+	padding:30px 45px;
+	text-align:center;
+	transition:all .5s;
+}
+.dragover, .dropZone:hover {
+	border:2px dashed #999;
+	background-color:#E6E6E6;
+}
+img {
+	max-width: 100%;
+}
+.left {
+	text-align: left;
+}
+.right {
+	text-align: right;
+}
+</style>
+<link href="cropper.min.css" media="all" rel="stylesheet">
+<div class="c m">
+	<section id="sect-LoadImage">
+		<label class="dropZone">
+			<span>
+				<p>Drop Image here</p>
+				<p>OR</p>
+				<p><span class="cta">Load Image</span></p>
+			</span>
+			<input type="file" id="fileUpload" name="imageLoader"/>
+		</label>
+	</section>
+	<section id="sect-SetSize" class="hide">
+		<p class="left"><input type="button" value="< Back" class="lightCTA" id="Btn-BackSetSize"></p>
+		<p>Set the size you want to resize the image to:</p>
+		<p><label>Width <input type="number" placeholder="Width" id="inputWidth"></label></p>
+		<p><label>Height <input type="number" placeholder="Height" id="inputHeight"></label></p>
+		<p class="right"><input type="button" value="Next" class="cta" id="Btn-SetSize"></p>
+	</section>
+	<section id="sect-Resize" class="hide">
+		<p class="left"><input type="button" value="< Back" class="lightCTA" id="Btn-BackResize"></p>
+		<div>
+			<img id="displayImg">
+		</div>
+		<p class="right"><input type="button" value="Download" id="Btn-Download" class="cta"></p>
+	</section>
+
+	
+<script src="/lib/cropper.min.js"></script>
+<script src="/lib/Framework.min.js"></script>
+<script>
+"use strict";
+ 
+// New framework
+var img = new resizeFramework.Img();
+$('#fileUpload').addEventListener('change', function(e) { 
+	img.uploadEvent(e, function() {
+		showSetSizeSect();
+	});
+	
+}, false);
+
+if (resizeFramework.fileDropSupported) {
+	$(".dropZone").addEventListener('dragover', function(e) {
+		this.classList.add("dragover");
+	});
+	
+	$(".dropZone").addEventListener('dragleave', function(e) {
+		this.classList.remove("dragover");
+	});	
+	
+	document.body.addEventListener('drop', function(e) { 
+		img.dropEvent(e, function() {
+			showSetSizeSect();
+		});
+	}, true);
+} else {
+	$(".dropZone").innerText = "Click to load image";
+}
+
+var locked = (getParameterByName('locked') && getParameterByName('locked') === "true");
+
+function showSetSizeSect() {
+	$('#sect-LoadImage').hide();
+	$('#sect-Resize').hide();
+	
+	$('#inputWidth').value = getParameterByName('width') || "";
+	$('#inputHeight').value = getParameterByName('height') || "";
+	
+	if (locked) return showResizeSect(), true;
+	
+	$('#sect-SetSize').show();
+}
+
+function showResizeSect() {
+	$('#sect-LoadImage').hide();
+	$('#sect-SetSize').hide();
+	
+	$('#displayImg').src = img.data.src;
+
+	var ratio = $('#inputWidth').value/$('#inputHeight').value;
+	if (window.crop) window.crop.destroy();
+	window.crop = new Cropper($('#displayImg'), {
+		viewMode: 1,
+		responsive: true,
+    	aspectRatio: ratio,
+    	zoomable: false,
+    	minContainerWidth: 200,
+    	minContainerHeight: 100,
+		modal: true,
+		ready: function() {
+			this.cropper.onResize(); // Sets the crop elem to fill the space
+		}
+	});
+	
+	$('#sect-Resize').show();
+}
+
+function showLoadSect() {
+	$('#sect-SetSize').hide();
+	$('#sect-Resize').hide();
+	
+	$('#sect-LoadImage').show();
+}
+
+$('#Btn-SetSize').addEventListener('click', function(e) {
+	showResizeSect();
+});
+
+$('#Btn-BackResize').addEventListener('click', function(e) {
+	if (!locked) 
+		showSetSizeSect();
+	else
+		showLoadSect();
+});
+
+$('#Btn-BackSetSize').addEventListener('click', function(e) {
+	showLoadSect();
+});
+
+
+$('#Btn-Download').addEventListener('click', function(e) {
+	var _mimeType = "image/JPEG";
+	resizeFramework.resizeCanvas(window.crop.getCroppedCanvas(), $('#inputWidth').value || 100, $('#inputHeight').value || 100).toBlob(function(outputBlob) {
+		var _fileName = "rsz_" + img.fileName + ".jpeg";
+		saveAs(outputBlob, _fileName);
+	}, _mimeType);
+});
+
+//http://stackoverflow.com/a/901144
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+	
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+</script>
